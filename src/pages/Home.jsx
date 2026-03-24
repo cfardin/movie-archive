@@ -1,16 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MovieCard from "../components/MovieCard"
+import { searchMovies, getPopularMovies } from '../services/api';
+import "../CSS/Home.css";
 
 const Home = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
 
-    const movies = [
-        {id : 1, title : "meow", release_date : "2020"},
-        {id : 2, title : "cat", release_date : "2020"},
-        {id : 3, title : "text her", release_date : "2020"},
-        {id : 4, title : "she is cute", release_date : "2020"}
-    ]
+    const [movies, setMovies] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadPopularMovies = async () =>{
+            try{
+                const popularMovies = await getPopularMovies();
+                setMovies(popularMovies);
+            } catch (err) {
+                setError("Failed to l")
+            } finally{
+                setLoading(true);
+            }
+        }
+
+        loadPopularMovies();
+    }, []);
+
 
     const handleSearch = (e) =>{
         e.preventDefault();
@@ -20,6 +35,7 @@ const Home = () => {
 
     return (
         <div className='home'>
+            {/* searching form */}
             <form onSubmit={handleSearch} className='search-form'>
                 <input 
                     type="text"
@@ -28,7 +44,7 @@ const Home = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}/>
 
-                <button className='search-btn'>search</button>
+                <button className='search-button'>search</button>
             </form>
             <div className='movies-grid'>
                 {
