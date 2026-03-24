@@ -3,7 +3,7 @@ import "../CSS/Favorites.css"
 
 const Favorites = () => {
     return (
-        <div className='favorite-empty'>
+        <div className='favorites-empty'>
             <h2>No Favorite Movies Yet</h2>
             <p>Start adding movies to your favorites</p>
         </div>
